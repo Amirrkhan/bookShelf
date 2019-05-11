@@ -51,6 +51,14 @@ const sideNavItems = [
   },
   {
     type: "navItem",
+    text: "Registration",
+    icon: "plus",
+    link: "/registration",
+    restricted: false,
+    exclude: true
+  },
+  {
+    type: "navItem",
     text: "Logout",
     icon: "sign-out",
     link: "/user/logout",

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { getAllUsers, registerUser } from "../../actions";
-
 import Form from "../../widgetsUI/Form/Form";
+import { connect } from "react-redux";
+
+import { registerUser, loginUser } from "../../actions";
 
 const formData = {
   name: {
@@ -84,92 +84,45 @@ const buttonConfig = {
   }
 };
 
-class Register extends Component {
+class Registration extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: ""
+      users: "",
+      email: "",
+      password: ""
     };
-    this.props.dispatch(getAllUsers());
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const propsUsers = nextProps.user.users;
-    if (nextProps.user.login.isAuth && propsUsers !== prevState.users) {
-      return { users: propsUsers };
-    } else return null;
+  componentDidUpdate() {
+    const { email, password } = this.state;
+    if (this.props.user.register && !this.props.submitForm) {
+      this.props.dispatch(loginUser({ email, password }));
+    }
   }
-
-  tableOfUsersRender = () => {
-    let template;
-    if (this.state.users && this.state.users !== {}) {
-      template = (
-        <div className="current_users">
-          <h4>Current users</h4>
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Lastname</th>
-                <th>Email</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.users.map(item => {
-                return (
-                  <tr key={item._id}>
-                    <td>{item.name}</td>
-                    <td>{item.lastname}</td>
-                    <td>{item.email}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      );
-    } else template = null;
-
-    return template;
-  };
-
-  registerStatusCheck = () => {
-    let template;
-    if (this.props.user.register !== undefined) {
-      if (this.props.user.register) {
-        template = (
-          <div className="form__success">Successufully registered</div>
-        );
-      } else {
-        template = (
-          <div className="form__error">Error: Email is already exist</div>
-        );
-      }
-      return template;
-    } else return null;
-  };
-
   submitFormFunction = data => {
-    this.props.dispatch(registerUser(data, this.props.user.users));
-    if (this.state.users) {
+    const { email, password } = data;
+    if (this.props.submitForm) {
+      this.props.submitForm(data);
+    } else {
+      this.props.dispatch(registerUser(data));
       this.setState({
-        users: ""
+        email,
+        password
       });
     }
   };
 
   render() {
+    console.log(this.props);
     return (
       <div className="rl_container">
         <Form
-          formCaption={<h2>Add user</h2>}
+          formCaption={<h2>Add a user</h2>}
           formData={formData}
           submitButtonConfig={buttonConfig}
           submitFormFunction={data => this.submitFormFunction(data)}
-          clearAfterSubmit={true}
         />
-        {this.registerStatusCheck()}
-        {this.tableOfUsersRender()}
       </div>
     );
   }
@@ -181,4 +134,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Register);
+export default connect(mapStateToProps)(Registration);

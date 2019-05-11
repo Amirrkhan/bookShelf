@@ -140,6 +140,14 @@ app.post("/api/login", (req, res) => {
   });
 });
 
+app.delete("/api/user_delete", (req, res) => {
+  const id = req.body.id;
+
+  User.findByIdAndRemove(id, (err, doc) => {
+    if (err) return res.status(400).send(_id);
+    res.json(true);
+  });
+});
 // UPDATE //
 
 app.post("/api/book_update", (req, res) => {

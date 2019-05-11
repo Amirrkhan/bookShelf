@@ -431,3 +431,10 @@ tr:nth-child(even) {
     transform: rotate(360deg);
   }
 }
+
+button {
+  background: none;
+  border: none;
+
+  outline: none;
+}

@@ -12,7 +12,8 @@ import User from "./components/Admin";
 import AddBook from "./containers/Admin/addBook";
 import UserPosts from "./components/Admin/userPosts";
 import EditBook from "./containers/Admin/editBook";
-import Register from "./containers/Admin/register";
+import AddNewUser from "./containers/Admin/addNewUser";
+import Registration from "./containers/Admin/registration";
 
 const Routes = () => {
   return (
@@ -34,7 +35,12 @@ const Routes = () => {
           exact
           component={Auth(EditBook, true)}
         />
-        <Route path="/user/register" exact component={Auth(Register, true)} />
+        <Route path="/user/register" exact component={Auth(AddNewUser, true)} />
+        <Route
+          path="/registration"
+          exact
+          component={Auth(Registration, false)}
+        />
       </Switch>
     </Layout>
   );

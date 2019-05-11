@@ -168,21 +168,42 @@ export function getAllUsers() {
 }
 
 export function registerUser(data, userList) {
-  const request = axios.post("/register", data);
-
-  return dispatch => {
-    request.then(({ data }) => {
-      let users = data.success ? [...userList, data.user] : userList;
-      let response = {
-        success: data.success,
-        users
-      };
-      dispatch({
-        type: "USER_REGISTER",
-        payload: response
+  if (userList) {
+    const request = axios.post("/register", data);
+    return dispatch => {
+      request.then(({ data }) => {
+        let users = data.success ? [...userList, data.user] : userList;
+        let response = {
+          success: data.success,
+          users
+        };
+        dispatch({
+          type: "ADD_NEW_USER",
+          payload: response
+        });
       });
-    });
-  };
+    };
+  } else {
+    const request = axios
+      .post("/register", data)
+      .then(response => response.data);
+
+    return {
+      type: "USER_REGISTER",
+      payload: request
+    };
+  }
 }
 
+export function deleteUser(id) {
+  console.log(id);
+  const request = axios
+    .delete("/user_delete", { data: { id } })
+    .then(response => response.data);
+
+  return {
+    type: "USER_DELETE",
+    payload: request
+  };
+}
 //
