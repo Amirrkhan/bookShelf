@@ -23,9 +23,10 @@ class HomeContainer extends Component {
   };
 
   render() {
+    console.log(this.props.books);
     return (
       <div>
-        {this.props.books ? this.renderItems(this.props.books) : null}
+        {this.props.books.list ? this.renderItems(this.props.books) : null}
         <Button onclickFunc={this.loadMore} buttonText="loadmore" />
       </div>
     );
