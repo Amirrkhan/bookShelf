@@ -1,22 +1,22 @@
 // export requirement modules for app
-const express = require("express");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const mongoose = require("mongoose");
+import express, { static } from "express";
+import { json } from "body-parser";
+import cookieParser from "cookie-parser";
+import { Promise, connect } from "mongoose";
 const config = require("./config/config").get(process.env.NODE_ENV);
 const app = express();
 
-mongoose.Promise = global.Promise;
-mongoose.connect(config.DATABASE);
+Promise = global.Promise;
+connect(config.DATABASE);
 
-const { User } = require("./models/user");
-const { Book } = require("./models/book");
-const { auth } = require("./middleware/auth");
+import { User } from "./models/user";
+import { Book } from "./models/book";
+import { auth } from "./middleware/auth";
 
-app.use(bodyParser.json());
+app.use(json());
 app.use(cookieParser());
 
-app.use(express.static(`client/build`));
+app.use(static(`client/build`));
 
 //Requests to the server
 
